@@ -8,7 +8,7 @@
 
 ### Description
 
-The microservices has been created using Google Cloud Functions (GCFs). GCFs are serverless, scalable functions-as-a-service components which can be used for quick development and deployment. <br>
+The microservice has been created using Google Cloud Functions (GCFs). GCFs are serverless, scalable functions-as-a-service components which can be used for quick development and deployment. <br>
 For the mailing service, I have used the Gmail SMTP server. I have created a dummy gmail ID from where the mails would be sent. I have obtained the Google OAuth2 Keys (clientID, clientSecret, etc) from Google Cloud Platform by enabling the Gmail API service. These credentials have been added to a Cloud Firestore (NoSQL cloud database) document. 
 
 The Cloud function created is a HTTP POST service, with the inputs as sender email, message subject and message body. 
