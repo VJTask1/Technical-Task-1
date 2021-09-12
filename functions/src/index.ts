@@ -12,38 +12,43 @@ exports.sendeMail = functions.https.onRequest(async (request, response) => {
   
     let data:any = request.body;
     console.log(data);
-    await admin.firestore().collection("Google Data").get()
-    .then(userData => {
-        let userDetails = userData.docs[0].data();
-        var transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                type: 'OAuth2',
-                user: userDetails.user,
-                clientId: userDetails.clientId,
-                clientSecret: userDetails.clientSecret,
-                refreshToken: userDetails.refreshToken,
-                accessToken: userDetails.accessToken
+    if (data && data.email_to && data.subject && data.body) {
+        await admin.firestore().collection("Google Data").get()
+        .then(userData => {
+            let userDetails = userData.docs[0].data();
+            var transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    type: 'OAuth2',
+                    user: userDetails.user,
+                    clientId: userDetails.clientId,
+                    clientSecret: userDetails.clientSecret,
+                    refreshToken: userDetails.refreshToken,
+                    accessToken: userDetails.accessToken
+                }
+            });
+            
+            var mail = {
+                from: userDetails.user,
+                to: data.email_to,
+                subject: data.subject,
+                text: data.body
             }
+            
+            return transporter.sendMail(mail, function(err, info) {
+                if (err) {
+                    response.send("Error: " + JSON.stringify(err));
+                } else {
+                    response.send("Success: " + JSON.stringify(info));
+                }
+                transporter.close();
+            });
         });
-        
-        var mail = {
-            from: userDetails.user,
-            to: data.email_to,
-            subject: data.subject,
-            text: data.body
-        }
-        
-        return transporter.sendMail(mail, function(err, info) {
-            if (err) {
-                response.send("Error: " + JSON.stringify(err));
-            } else {
-                response.send("Success: " + JSON.stringify(info));
-            }
-            transporter.close();
-        });
-    });
+    } else {
+        response.status(400).send('Please send parameters in body of the POST request');
+        return;
+    }
 
 });
