@@ -2,10 +2,8 @@
 
 **Usecase**: Build a highly available emailing microservice
 
-**Platform**: Google Firebase
-
-**Service**: Google Cloud Functions
-
+**Platform**: Google Firebase<br>
+**Service**: Google Cloud Functions<br>
 **Database**: Cloud Firestore (NoSQL)
 
 ### Description
@@ -23,8 +21,22 @@ Below is the runtime configuration data for the Cloud function. We would be usin
 
 <img width="533" alt="Screenshot 2021-09-12 at 10 38 19 PM" src="https://user-images.githubusercontent.com/90556203/132992854-d78ab2bc-968a-4f3c-ac20-ae87956a5122.png">
 
-Due to the time constraint, I have not build the front end screen to get the imput parameters from the user. <br>
+Due to the time constraint, I have not built the front-end screen to get the input parameters from the user. <br>
 My idea for the screen was to create a web application using Angular and host it in Firebase itself. The screen would be a simple form with 3 input fields (sender email, Mail Subject and Mail Body), and a send button which would trigger the HTTP function.
+
+### Usage
+
+To send an email, we would need to use Postman client to call the API directly. <br>
+URL: https://us-central1-technicaltask1-fabf8.cloudfunctions.net/sendeMail
+```
+Type: POST
+Body: {
+  'email_to': "<receiverEmail@domain.com>",
+  'subject': "<Mail Subject>",
+  'body': "<Mail Body>"
+}
+```
+The Cloud Function has been deployed already, so no extra steps are needed for it. <br>
 
 ### Scope for Enhancement
 
